@@ -47,6 +47,7 @@ Fetches the top AI GitHub repositories from the GitHub API.
     }
   ]
 }
+
 ## Run Locally
 npm install
 npm run dev
