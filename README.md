@@ -50,5 +50,4 @@ Fetches the top AI GitHub repositories from the GitHub API.
     }
   ]
 }
-npm install
-npm run dev
+
