@@ -16,12 +16,15 @@ and allows users to generate short AI-powered summaries for each project using G
 - API responses are cached for a short duration to avoid excessive external API requests.
 
 ---
+
 ## Tech Stack
 - Next.js (App Router)
 - React
 - TypeScript
 - Groq API
 - GitHub REST API
+
+---
 
 ## Pages
 - `/` – Main page showing trending AI GitHub projects
@@ -47,7 +50,5 @@ Fetches the top AI GitHub repositories from the GitHub API.
     }
   ]
 }
-
-## Run Locally
 npm install
 npm run dev
