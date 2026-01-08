@@ -37,6 +37,13 @@ and allows users to generate short AI-powered summaries for each project using G
 ### GET `/api/trending`
 Fetches the top AI GitHub repositories from the GitHub API.
 
+### GET `/api/huggingface`
+Returns trending Hugging Face models sorted by downloads.
+
+## Notes
+- Current MVP focuses on GitHub projects in the main feed.
+- Hugging Face data is available via a dedicated API endpoint.
+
 **Response example:**
 ```json
 {
