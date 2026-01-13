@@ -76,16 +76,3 @@ Returns trending Hugging Face models sorted by downloads (optional / bonus endpo
 ```bash
 npm install
 npm run dev
-```
-Open your browser at: 
-http://localhost:3000
-
-🌐 Deployment
-
-The application is deployed on Vercel.
-
-👥 Authors
-
-May Shabat
-
-Partner Name
