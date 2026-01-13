@@ -75,9 +75,8 @@ Generates an AI summary for a given project description using the Groq API and a
 ### GET `/api/huggingface`
 Returns trending Hugging Face models sorted by downloads (optional / bonus endpoint).
 
----
 
----
+
 
 ## ▶ How to Run Locally
 ```bash
