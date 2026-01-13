@@ -1,5 +1,3 @@
-Test commit – Git user verification
-
 # Ex2 – AI Trends Aggregator
 
 A Next.js web application that displays trending AI-related GitHub repositories
