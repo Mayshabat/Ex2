@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ex2 – AI Trends News Aggregator (MVP)
 
-## Getting Started
+## 📌 Project Overview
+A lightweight (MVP) web application that aggregates **trending AI and Machine Learning GitHub repositories** from the last 24 hours and presents them in a clean, Apple-inspired UI.
 
-First, run the development server:
+Each project card allows the user to generate a short AI-powered summary using an external LLM (Groq).  
+The API key is provided by the user and stored **locally in the browser only** (LocalStorage).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The project is built using **end-to-end JavaScript technologies**, optimized for **Vercel**, and follows the course requirements strictly (**no UI libraries used**).
+
+---
+
+## 🚀 Features (MVP)
+- Fetch trending AI/ML GitHub repositories from the **last 24 hours**
+- Feed-based UI with reusable project cards
+- Project details: repository name, description, stars, and link
+- AI-powered summaries (up to 3 short lines)
+- User-provided API key stored in **LocalStorage**
+- No backend storage of API keys
+- Server-side API routes using Next.js (App Router)
+- In-memory server caching (5 minutes) to limit external API calls
+- Minimalist, Apple-inspired design using **vanilla CSS only**
+
+---
+
+## 🧠 Tech Stack
+- **Framework:** Next.js (App Router)
+- **Frontend:** React (Functional Components)
+- **Backend:** Next.js API Routes (Server Components)
+- **Language:** TypeScript
+- **Styling:** Vanilla CSS / CSS Modules
+- **APIs:**
+  - GitHub REST API
+  - Groq LLM API
+- **Storage:** LocalStorage (client-side only)
+- **Deployment:** Vercel
+
+---
+
+## 🌐 Live Demo (Vercel)
+👉 **https://YOUR-PROJECT.vercel.app**
+
+---
+
+## 🗂️ Application Pages
+- `/` – Main feed displaying trending AI GitHub repositories
+- `/settings` – Settings page to save the Groq API key locally
+
+---
+
+## 🔌 API Routes
+
+### GET `/api/trending`
+Fetches trending AI-related GitHub repositories from the **last 24 hours**, sorted by stars.  
+Includes a **5-minute in-memory server cache**.
+
+**Response example:**
+```json
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "owner/repo",
+      "description": "Project description",
+      "stars": 12345,
+      "url": "https://github.com/owner/repo"
+    }
+  ]
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### POST `/api/summarize`
+Generates an AI summary for a given project description using the Groq API and a user-provided API key.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### GET `/api/huggingface`
+Returns trending Hugging Face models sorted by downloads (optional / bonus endpoint).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ▶ How to Run Locally
+```bash
+npm install
+npm run dev
+```
