@@ -1,11 +1,12 @@
 # Ex2 – AI Trends News Aggregator (MVP)
 
 ## 📌 Project Overview
-This project is a lightweight (MVP) web application that aggregates **trending AI and Machine Learning projects** from GitHub and presents them in a clean, Apple-inspired interface.
+A lightweight (MVP) web application that aggregates **trending AI and Machine Learning GitHub repositories** from the last 24 hours and presents them in a clean, Apple-inspired UI.
 
-The application allows users to generate short AI-powered summaries for each project using an external LLM (Groq), with the user’s API key stored **locally in the browser only**.
+Each project card allows the user to generate a short AI-powered summary using an external LLM (Groq).  
+The API key is provided by the user and stored **locally in the browser only** (LocalStorage).
 
-The project is based on **end-to-end JavaScript technologies**, optimized for **Vercel**, and follows the course requirements strictly (no UI libraries).
+The project is built using **end-to-end JavaScript technologies**, optimized for **Vercel**, and follows the course requirements strictly (**no UI libraries used**).
 
 ---
 
@@ -13,7 +14,7 @@ The project is based on **end-to-end JavaScript technologies**, optimized for **
 - Fetch trending AI/ML GitHub repositories from the **last 24 hours**
 - Feed-based UI with reusable project cards
 - Project details: repository name, description, stars, and link
-- AI-powered summaries (up to 3 lines per project)
+- AI-powered summaries (up to 3 short lines)
 - User-provided API key stored in **LocalStorage**
 - No backend storage of API keys
 - Server-side API routes using Next.js (App Router)
@@ -25,7 +26,7 @@ The project is based on **end-to-end JavaScript technologies**, optimized for **
 ## 🧠 Tech Stack
 - **Framework:** Next.js (App Router)
 - **Frontend:** React (Functional Components)
-- **Backend:** Next.js API Routes (Serverless)
+- **Backend:** Next.js API Routes (Server Components)
 - **Language:** TypeScript
 - **Styling:** Vanilla CSS / CSS Modules
 - **APIs:**
@@ -33,6 +34,11 @@ The project is based on **end-to-end JavaScript technologies**, optimized for **
   - Groq LLM API
 - **Storage:** LocalStorage (client-side only)
 - **Deployment:** Vercel
+
+---
+
+## 🌐 Live Demo (Vercel)
+👉 **https://YOUR-PROJECT.vercel.app**
 
 ---
 
@@ -45,7 +51,8 @@ The project is based on **end-to-end JavaScript technologies**, optimized for **
 ## 🔌 API Routes
 
 ### GET `/api/trending`
-Fetches trending AI-related GitHub repositories (sorted by stars, last 24 hours).
+Fetches trending AI-related GitHub repositories from the **last 24 hours**, sorted by stars.  
+Includes a **5-minute in-memory server cache**.
 
 **Response example:**
 ```json
@@ -76,3 +83,4 @@ Returns trending Hugging Face models sorted by downloads (optional / bonus endpo
 ```bash
 npm install
 npm run dev
+```
