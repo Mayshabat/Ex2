@@ -1,33 +1,72 @@
+export const runtime = "nodejs";
 
-import { NextResponse } from "next/server";
-export const revalidate = 300; // cache
+type Project = {
+  id: number;
+  name: string;
+  description: string | null;
+  stars: number;
+  url: string;
+};
+
+let cache: { projects: Project[] } | null = null;
+let cacheTime = 0;
+const CACHE_MS = 5 * 60 * 1000;
+
+function formatDateYYYYMMDD(d: Date) {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 export async function GET() {
-  const url =
-    "https://api.github.com/search/repositories?q=topic:ai&sort=stars&order=desc&per_page=10";
+  // ✅ 5-min server cache
+  const now = Date.now();
+  if (cache && now - cacheTime < CACHE_MS) {
+    return Response.json(cache);
+  }
 
-  const res = await fetch(url, {
+  // ✅ last 24 hours (dynamic)
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const sinceStr = formatDateYYYYMMDD(since);
+
+  const query = `topic:ai created:>=${sinceStr}`;
+  const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(
+    query
+  )}&sort=stars&order=desc&per_page=12`;
+
+
+
+  const ghRes = await fetch(url, {
     headers: {
+      "User-Agent": "ex2-app",
       Accept: "application/vnd.github+json",
     },
+    cache: "no-store",
   });
 
-  if (!res.ok) {
-    return NextResponse.json(
-      { error: "GitHub request failed" },
+  if (!ghRes.ok) {
+    const txt = await ghRes.text();
+    return new Response(
+      JSON.stringify({ error: "GitHub API failed", status: ghRes.status, txt }),
       { status: 500 }
     );
   }
 
-  const data = await res.json();
+  const json = await ghRes.json();
 
-  const projects = (data.items || []).map((repo: any) => ({
-    id: repo.id,
-    name: repo.full_name,
-    description: repo.description,
-    stars: repo.stargazers_count,
-    url: repo.html_url,
+  const projects: Project[] = (json.items || []).map((r: any) => ({
+    id: r.id,
+    name: r.full_name,
+    description: r.description,
+    stars: r.stargazers_count,
+    url: r.html_url,
   }));
 
-  return NextResponse.json({ projects });
+  const payload = { projects };
+
+  cache = payload;
+  cacheTime = Date.now();
+
+  return Response.json(payload);
 }

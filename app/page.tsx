@@ -1,4 +1,5 @@
 import NewsCard from "./components/NewsCard";
+import { headers } from "next/headers";
 
 type Project = {
   id: number;
@@ -9,7 +10,11 @@ type Project = {
 };
 
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/trending", {
+  const h = await headers();
+  const host = h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "http";
+
+  const res = await fetch(`${proto}://${host}/api/trending`, {
     cache: "no-store",
   });
 
@@ -20,8 +25,10 @@ export default async function Home() {
     <main className="container">
       <header className="header">
         <h1 className="title">AI Trends</h1>
-        
-        <a className="cardLink" href="/settings">Settings </a>
+
+        <a className="cardLink" href="/settings">
+          Settings
+        </a>
 
         <p className="subtitle">Top GitHub projects right now</p>
       </header>
