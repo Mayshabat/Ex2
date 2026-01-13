@@ -70,17 +70,19 @@ Returns trending Hugging Face models sorted by downloads (optional / bonus endpo
 
 ---
 
-## ⚙️ How to Run Locally
+---
+
+## ▶ How to Run Locally
 ```bash
 npm install
 npm run dev
+```
+Open your browser at: 
+http://localhost:3000
 
 🌐 Deployment
 
 The application is deployed on Vercel.
-
-🔗 Live URL:
-(add Vercel link here)
 
 👥 Authors
 
