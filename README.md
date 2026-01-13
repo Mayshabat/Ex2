@@ -60,6 +60,7 @@ Fetches trending AI-related GitHub repositories (sorted by stars, last 24 hours)
     }
   ]
 }
+```
 
 ### POST `/api/summarize`
 Generates an AI summary for a given project description using the Groq API and a user-provided API key.
