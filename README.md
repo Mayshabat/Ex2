@@ -38,7 +38,7 @@ The project is built using **end-to-end JavaScript technologies**, optimized for
 ---
 
 ## 🌐 Live Demo (Vercel)
-👉 **https://YOUR-PROJECT.vercel.app**
+👉 **[https://YOUR-PROJECT.vercel.app](https://ex2-h22u.vercel.app/)**
 
 ---
 
