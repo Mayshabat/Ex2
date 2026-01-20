@@ -10,15 +10,25 @@ type Project = {
 };
 
 export default async function Home() {
-  const h = await headers();
-  const host = h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "http";
+ const h =await headers(); 
+ const host = h.get("host");
+ const proto = h.get("x-forwarded-proto") ?? "https"; 
 
-  const res = await fetch(`${proto}://${host}/api/trending`, {
-    cache: "no-store",
-  });
+if (!host) {
+  throw new Error("Missing host header");
+}
 
-  const data = await res.json();
+const res = await fetch(`${proto}://${host}/api/trending`, {
+  cache: "no-store",
+});
+
+if (!res.ok) {
+  const text = await res.text();
+  throw new Error(`Failed to load trending: ${res.status} ${text.slice(0, 200)}`);
+}
+
+const data = await res.json();
+
   const projects: Project[] = data.projects || [];
 
   return (
