@@ -83,3 +83,7 @@ Returns trending Hugging Face models sorted by downloads (optional / bonus endpo
 npm install
 npm run dev
 ```
+## 👩‍💻 Authors
+
+- May Shabat
+- Nikol Pinchevsky
