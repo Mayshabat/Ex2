@@ -9,18 +9,33 @@ type Project = {
 };
 
 export default async function Home() {
-  const res = await fetch("/api/trending", {
+  // Works both locally and on Vercel
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+  const res = await fetch(`${baseUrl}/api/trending`, {
     cache: "no-store",
   });
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Failed to load trending: ${res.status} ${text}`);
+    throw new Error(
+      `Failed to load trending: ${res.status} ${text.slice(0, 200)}`
+    );
+  }
+
+  // Safety: avoid trying to parse HTML as JSON
+  const contentType = res.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    const text = await res.text();
+    throw new Error(
+      `Expected JSON but got ${contentType}. Body: ${text.slice(0, 200)}`
+    );
   }
 
   const data = await res.json();
   const projects: Project[] = data.projects || [];
-
 
   return (
     <main className="container">
