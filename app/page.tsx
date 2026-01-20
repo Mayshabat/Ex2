@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import NewsCard from "./components/NewsCard";
 
 type Project = {
@@ -8,34 +11,31 @@ type Project = {
   url: string;
 };
 
-export default async function Home() {
-  // Works both locally and on Vercel
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+export default function Home() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [error, setError] = useState<string>("");
 
-  const res = await fetch(`${baseUrl}/api/trending`, {
-    cache: "no-store",
-  });
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/trending", { cache: "no-store" });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(
-      `Failed to load trending: ${res.status} ${text.slice(0, 200)}`
-    );
-  }
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(
+            `Failed to load trending: ${res.status} ${text.slice(0, 200)}`
+          );
+        }
 
-  // Safety: avoid trying to parse HTML as JSON
-  const contentType = res.headers.get("content-type") ?? "";
-  if (!contentType.includes("application/json")) {
-    const text = await res.text();
-    throw new Error(
-      `Expected JSON but got ${contentType}. Body: ${text.slice(0, 200)}`
-    );
-  }
+        const data = await res.json();
+        setProjects(data.projects || []);
+      } catch (e: any) {
+        setError(e?.message ?? "Failed to load projects");
+      }
+    };
 
-  const data = await res.json();
-  const projects: Project[] = data.projects || [];
+    load();
+  }, []);
 
   return (
     <main className="container">
@@ -49,11 +49,15 @@ export default async function Home() {
         <p className="subtitle">Top GitHub projects right now</p>
       </header>
 
-      <section className="grid">
-        {projects.map((p) => (
-          <NewsCard key={p.id} project={p} />
-        ))}
-      </section>
+      {error ? (
+        <p className="subtitle">{error}</p>
+      ) : (
+        <section className="grid">
+          {projects.map((p) => (
+            <NewsCard key={p.id} project={p} />
+          ))}
+        </section>
+      )}
     </main>
   );
 }
