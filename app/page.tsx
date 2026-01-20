@@ -10,24 +10,30 @@ type Project = {
 };
 
 export default async function Home() {
- const h =await headers(); 
- const host = h.get("host");
- const proto = h.get("x-forwarded-proto") ?? "https"; 
+  const h = await headers();
+  const host = h.get("host");
+  if (!host) throw new Error("Missing host header");
 
-if (!host) {
-  throw new Error("Missing host header");
-}
+  const protoHeader = h.get("x-forwarded-proto");
+  const proto = (protoHeader?.split(",")[0] ?? "https").trim(); // חשוב!
 
-const res = await fetch(`${proto}://${host}/api/trending`, {
-  cache: "no-store",
-});
+  const url = new URL("/api/trending", `${proto}://${host}`);
 
-if (!res.ok) {
-  const text = await res.text();
-  throw new Error(`Failed to load trending: ${res.status} ${text.slice(0, 200)}`);
-}
+  const res = await fetch(url, { cache: "no-store" });
 
-const data = await res.json();
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Failed to load trending: ${res.status} ${text.slice(0, 200)}`);
+  }
+
+  const contentType = res.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    const text = await res.text();
+    throw new Error(`Expected JSON but got ${contentType}: ${text.slice(0, 200)}`);
+  }
+
+  const data = await res.json();
+
 
   const projects: Project[] = data.projects || [];
 
